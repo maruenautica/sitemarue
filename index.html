@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maruê Náutica, a Bahia no seu ritmo</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: #163555;
+            padding-top: 80px;
+        }
+        @media (max-width: 640px) {
+            body {
+                padding-top: 100px;
+            }
+        }
+        .bg-primary-dark {
+            background-color: #163555;
+        }
+        .text-primary-dark {
+            color: #163555;
+        }
+        .bg-accent-teal {
+            background-color: #4DA6AB;
+        }
+        .text-accent-teal {
+            color: #4DA6AB;
+        }
+        .border-accent-teal {
+            border-color: #4DA6AB;
+        }
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: white;
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-whatsapp:hover {
+            background-color: #1DA851;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .nav-link {
+            transition: color 0.3s ease-in-out, border-bottom-color 0.3s ease-in-out;
+        }
+        .nav-link:hover {
+            color: #4DA6AB;
+            border-bottom-color: #4DA6AB;
+        }
+        .section-background {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000;
+        }
+        .video-container iframe,
+        .video-container object,
+        .video-container embed {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .custom-icon {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+            margin-bottom: 1rem;
+        }
+
+        /* Tooltip-like popover styling */
+        .destination-item {
+            position: relative;
+            z-index: 10;
+        }
+        .destination-item .tooltip-content {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #163555;
+            padding: 1rem;
+            border-radius: 8px;
+            white-space: normal;
+            min-width: 250px;
+            max-width: 300px;
+            text-align: center;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            pointer-events: none;
+        }
+        /* New class for touch and hover/focus */
+        .destination-item:hover .tooltip-content,
+        .destination-item:focus-within .tooltip-content,
+        .destination-item.active .tooltip-content {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Tooltip arrow */
+        .destination-item .tooltip-content::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 8px;
+            border-style: solid;
+            border-color: rgba(255, 255, 255, 0.95) transparent transparent transparent;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 antialiased">
+
+    <!-- Fixed Header -->
+    <header class="bg-white shadow-md py-4 px-6 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
+            <a href="#hero" class="flex items-center mb-3 sm:mb-0">
+                <img src="logo.png" alt="Maruê Náutica Logo" class="h-20 sm:h-24 rounded-full">
+            </a>
+            <nav>
+                <ul class="flex flex-wrap justify-center gap-4 md:gap-8 text-primary-dark font-medium text-lg">
+                    <li><a href="#diferenciais" class="nav-link border-b-2 border-transparent pb-1">Diferenciais</a></li>
+                    <li><a href="#destinos" class="nav-link border-b-2 border-transparent pb-1">Destinos</a></li>
+                    <li><a href="#contato" class="nav-link border-b-2 border-transparent pb-1">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section with Background Video -->
+    <section id="hero" class="relative h-screen flex items-center justify-center text-center overflow-hidden">
+        <!-- Background Video -->
+        <video id="hero-video" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0">
+            <!-- Replace this URL with your background video. Suggestion: a video of a speed boat in the water, beaches, etc. -->
+            <source src="marue.mp4" type="video/mp4">
+            Seu navegador não suporta a tag de vídeo.
+        </video>
+
+        <!-- Overlay for darkening and fade effect -->
+        <div class="absolute inset-0 bg-black opacity-40 z-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-primary-dark via-transparent to-transparent z-10"></div>
+
+        <!-- Content (slogan and button) -->
+        <div class="container mx-auto max-w-4xl relative z-20 text-white px-4">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-6 drop-shadow-lg fade-in">
+                Maruê Náutica, a Bahia no seu ritmo
+            </h1>
+            <p class="text-lg sm:text-xl md:text-2xl mb-8 font-light drop-shadow-md fade-in" style="transition-delay: 0.2s;">
+                Sua aventura náutica de excelência no sul da Bahia. Experiências autênticas, seguras e inesquecíveis.
+            </p>
+            <a href="https://wa.me/5573999035800" target="_blank" class="inline-block btn-whatsapp text-lg sm:text-xl font-bold py-3 px-8 rounded-full shadow-lg hover-effect fade-in" style="transition-delay: 0.4s;">
+                Agende seu Passeio via WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <!-- Nossos Diferenciais Section -->
+    <section id="diferenciais" class="bg-white py-16 md:py-24 px-4">
+        <div class="container mx-auto text-center max-w-5xl">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-12 text-primary-dark fade-in">Por Que Escolher a Maruê Náutica?</h2>
+            <p class="text-xl text-gray-800 mb-10 leading-relaxed fade-in" style="transition-delay: 0.1s;">
+                Mais que um passeio, uma experiência. Nossos diferenciais garantem momentos únicos de aventura, relaxamento e conexão com as belezas da Bahia.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Diferencial 1: Segurança -->
+                <div class="flex flex-col items-center p-6 rounded-lg shadow-md bg-gray-50 fade-in" style="transition-delay: 0.2s;">
+                    <img src="seg.png" alt="Ícone de Segurança" class="custom-icon">
+                    <h3 class="text-xl font-semibold mb-2 text-primary-dark">Segurança Inegociável</h3>
+                    <p class="text-gray-700">Frota impecável e segura, com rigoroso plano de manutenção. Nossas operações são realizadas dentro dos mais altos padrões de segurança e legalidade. Sua tranquilidade é nossa prioridade.</p>
+                </div>
+                <!-- Diferencial 2: Conhecimento Local -->
+                <div class="flex flex-col items-center p-6 rounded-lg shadow-md bg-gray-50 fade-in" style="transition-delay: 0.4s;">
+                    <img src="loc.png" alt="Ícone de Conhecimento Local" class="custom-icon">
+                    <h3 class="text-xl font-semibold mb-2 text-primary-dark">Conhecimento Profundo da Região</h3>
+                    <p class="text-gray-700">Nossos guias são anfitriões apaixonados, experientes e habilitados, que conhecem cada enseada e os melhores recantos do extremo sul da Bahia. Descubra segredos que só a Maruê pode te mostrar.</p>
+                </div>
+                <!-- Diferencial 3: Atendimento Personalizado -->
+                <div class="flex flex-col items-center p-6 rounded-lg shadow-md bg-gray-50 fade-in" style="transition-delay: 0.6s;">
+                    <img src="atend.png" alt="Ícone de Atendimento Personalizado" class="custom-icon">
+                    <h3 class="text-xl font-semibold mb-2 text-primary-dark">Atendimento Exclusivo e Acolhedor</h3>
+                    <p class="text-gray-700">Desde o primeiro contato ao desembarque, você sentirá a diferença de um atendimento humano e dedicado. Entendemos suas necessidades e superamos suas expectativas para criar memórias que durarão para sempre.</p>
+                </div>
+                <!-- Diferencial 4: Aventura e Flexibilidade -->
+                <div class="flex flex-col items-center p-6 rounded-lg shadow-md bg-gray-50 fade-in" style="transition-delay: 0.8s;">
+                    <img src="ave.png" alt="Ícone de Aventura e Flexibilidade" class="custom-icon">
+                    <h3 class="text-xl font-semibold mb-2 text-primary-dark">Aventura e Roteiros Personalizados</h3>
+                    <p class="text-gray-700">Explore em lancha! Oferecemos roteiros principais e a possibilidade de criar um percurso exclusivo para sua família ou grupo, com opcionais como churrasqueira e wakeboard.</p>
+                </div>
+                <!-- Diferencial 5: Paixão pela Aventura -->
+                <div class="flex flex-col items-center p-6 rounded-lg shadow-md bg-gray-50 fade-in" style="transition-delay: 1.0s;">
+                    <img src="pai.png" alt="Ícone de Paixão pela Aventura" class="custom-icon">
+                    <h3 class="text-xl font-semibold mb-2 text-primary-dark">Paixão pela Aventura e Natureza</h3>
+                    <p class="text-gray-700">Amor incondicional pela natureza e pelos esportes náuticos nos move. Proporcionamos a emoção da aventura e a liberdade das águas, com profundo respeito pelo meio ambiente marinho, garantindo diversão e cuidado.</p>
+                </div>
+                <!-- Diferencial 6: Experiências para Todos -->
+                <div class="flex flex-col items-center p-6 rounded-lg shadow-md bg-gray-50 fade-in" style="transition-delay: 1.2s;">
+                    <img src="exp.png" alt="Ícone de Experiências para Todos" class="custom-icon">
+                    <h3 class="text-xl font-semibold mb-2 text-primary-dark">Experiências para Cada Desejo</h3>
+                    <p class="text-gray-700">Atendemos famílias em busca de diversão segura, grupos de amigos para aventura, casais em lua de mel que buscam privacidade e romance, e amantes da natureza que querem explorar belezas subaquáticas e costeiras. Sua experiência, nossa prioridade.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destinations Section -->
+    <section id="destinos" class="section-background py-16 md:py-24 px-4 min-h-[50vh]" style="background-image: url('praia.jpg');">
+        <div class="absolute inset-0 bg-black opacity-40 z-0"></div>
+        <div class="container mx-auto relative z-10 max-w-5xl">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-8 text-white fade-in">Descubra Nossos Destinos Exclusivos</h2>
+            <p class="text-xl sm:text-2xl font-light text-white mb-12 leading-relaxed fade-in" style="transition-delay: 0.2s;">
+                Explore as belezas paradisíacas do litoral baiano a bordo de nossa lancha confortável e segura. Perfeito para famílias, grupos de amigos ou casais que buscam exclusividade e momentos inesquecíveis.
+            </p>
+
+            <!-- Destination List with Tooltips -->
+            <ul class="list-none p-0 flex flex-wrap justify-center gap-4 text-white text-lg sm:text-xl font-medium">
+                <li class="px-4 py-2 bg-accent-teal rounded-full shadow-md transition duration-300 ease-in-out hover:scale-105 cursor-pointer fade-in destination-item" style="transition-delay: 0.3s;">
+                    Porto Seguro
+                    <div class="tooltip-content hidden sm:block">
+                        O centro histórico da cidade, com vistas panorâmicas e um cenário vibrante.
+                    </div>
+                </li>
+                <li class="px-4 py-2 bg-accent-teal rounded-full shadow-md transition duration-300 ease-in-out hover:scale-105 cursor-pointer fade-in destination-item" style="transition-delay: 0.4s;">
+                    Arraial d'Ajuda
+                    <div class="tooltip-content hidden sm:block">
+                        Praias paradisíacas e uma vila charmosa, perfeita para relaxar.
+                    </div>
+                </li>
+                <li class="px-4 py-2 bg-accent-teal rounded-full shadow-md transition duration-300 ease-in-out hover:scale-105 cursor-pointer fade-in destination-item" style="transition-delay: 0.5s;">
+                    Trancoso
+                    <div class="tooltip-content hidden sm:block">
+                        Charme rústico e sofisticado, com o famoso Quadrado e praias deslumbrantes.
+                    </div>
+                </li>
+                <li class="px-4 py-2 bg-accent-teal rounded-full shadow-md transition duration-300 ease-in-out hover:scale-105 cursor-pointer fade-in destination-item" style="transition-delay: 0.6s;">
+                    Praia do Espelho
+                    <div class="tooltip-content hidden sm:block">
+                        Considerada uma das praias mais bonitas do Brasil, famosa pelas piscinas naturais na maré baixa.
+                    </div>
+                </li>
+                <li class="px-4 py-2 bg-accent-teal rounded-full shadow-md transition duration-300 ease-in-out hover:scale-105 cursor-pointer fade-in destination-item" style="transition-delay: 0.7s;">
+                    Caraíva
+                    <div class="tooltip-content hidden sm:block">
+                        Uma vila encantadora e preservada, com ruas de areia e um ambiente boêmio.
+                    </div>
+                </li>
+                <li class="px-4 py-2 bg-accent-teal rounded-full shadow-md transition duration-300 ease-in-out hover:scale-105 cursor-pointer fade-in destination-item" style="transition-delay: 0.8s;">
+                    Corumbau
+                    <div class="tooltip-content hidden sm:block">
+                        Praia de águas calmas e límpidas, com um recife de corais que forma uma longa ponta de areia.
+                    </div>
+                </li>
+                <li class="px-4 py-2 bg-accent-teal rounded-full shadow-md transition duration-300 ease-in-out hover:scale-105 cursor-pointer fade-in destination-item" style="transition-delay: 0.9s;">
+                    Santo André
+                    <div class="tooltip-content hidden sm:block">
+                        Um vilarejo de pescadores tranquilo, ideal para quem busca paz e contato com a natureza.
+                    </div>
+                </li>
+                <li class="px-4 py-2 bg-accent-teal rounded-full shadow-md transition duration-300 ease-in-out hover:scale-105 cursor-pointer fade-in destination-item" style="transition-delay: 1.0s;">
+                    Recife de Fora (Porto Seguro)
+                    <div class="tooltip-content hidden sm:block">
+                        Um parque marinho de corais com rica vida subaquática, ideal para mergulho e snorkel.
+                    </div>
+                </li>
+                <li class="px-4 py-2 bg-accent-teal rounded-full shadow-md transition duration-300 ease-in-out hover:scale-105 cursor-pointer fade-in destination-item" style="transition-delay: 1.1s;">
+                    Subida do Rio Buranhém
+                    <div class="tooltip-content hidden sm:block">
+                        Uma aventura por manguezais exuberantes, com a beleza da Mata Atlântica e a fauna local.
+                    </div>
+                </li>
+                <li class="px-4 py-2 bg-accent-teal rounded-full shadow-md transition duration-300 ease-in-out hover:scale-105 cursor-pointer fade-in destination-item" style="transition-delay: 1.2s;">
+                    Satu
+                    <div class="tooltip-content hidden sm:block">
+                        Acessível apenas por barco, com piscinas naturais e uma beleza selvagem e intocada.
+                    </div>
+                </li>
+            </ul>
+
+            <p class="text-sm text-gray-200 mt-8 fade-in" style="transition-delay: 1.3s;">Todos os passeios de lancha têm duração de 6h, com embarque às 09:00h e retorno às 15:00h. Passeios para Recife de Fora dependem da maré e do pôr do sol para uma experiência ainda mais mágica.</p>
+            <p class="text-sm text-gray-200 mt-2 fade-in" style="transition-delay: 1.4s;">Nossos guias experientes conduzem você por roteiros espetaculares, garantindo diversão com responsabilidade. Além disso, podemos fazer um roteiro personalizado para sua família.</p>
+            <p class="text-sm text-gray-200 mt-2 fade-in" style="transition-delay: 1.5s;">Opcionais a parte para tornar seu passeio ainda mais exclusivo: Churrasqueira, Fotos e vídeos, Sapatilhas, Kit p/ churrasco, Petiscos, Bebidas, Óculos e Wakeboard.</p>
+
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section id="contato" class="section-background py-16 md:py-24 px-4 min-h-[60vh]" style="background-image: url('pds.jpg');">
+        <div class="absolute inset-0 bg-black opacity-40 z-0"></div>
+        <div class="container mx-auto relative z-10 max-w-4xl">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-8 text-white fade-in">Sua Aventura Náutica Começa Aqui!</h2>
+            <p class="text-lg sm:text-xl text-white mb-10 leading-relaxed fade-in" style="transition-delay: 0.2s;">
+                Desde o seu primeiro contato, nossa equipe está pronta para entender seus desejos. Do planejamento à execução do passeio, cada detalhe é cuidado para que sua única preocupação seja aproveitar. Entre em contato com a equipe Maruê Náutica e vamos planejar a experiência dos seus sonhos.
+            </p>
+            <a href="https://wa.me/5573999035800" target="_blank" class="inline-block btn-whatsapp text-xl font-bold py-4 px-10 rounded-full shadow-xl hover-effect fade-in" style="transition-delay: 0.4s;">
+                Fale Conosco e Agende!
+            </a>
+            <div class="mt-8 text-white text-md fade-in" style="transition-delay: 0.6s;">
+                <p>Ou cadastre seu estabelecimento como um parceiro oficial e receba benefícios.</p>
+                <p class="mt-2 text-lg font-semibold">(73) 99903-5800</p>
+                <p class="mt-1 text-lg font-semibold"><a href="https://instagram.com/maruenautica" target="_blank" class="text-accent-teal hover:underline">@maruenautica</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary-dark text-white py-8 px-4 rounded-t-lg shadow-inner">
+        <div class="container mx-auto text-center">
+            <p class="mb-4 fade-in" style="transition-delay: 0.1s;">&copy; 2025 Maruê Náutica. Todos os direitos reservados.</p>
+            <p class="mb-2 fade-in" style="transition-delay: 0.2s;">
+                <a href="https://wa.me/5573999035800" target="_blank" class="text-accent-teal hover:underline">
+                    WhatsApp: (73) 99903-5800
+                </a>
+            </p>
+            <p class="fade-in" style="transition-delay: 0.3s;">
+                <a href="https://instagram.com/maruenautica" target="_blank" class="text-accent-teal hover:underline">
+                    Instagram: @maruenautica
+                </a>
+            </p>
+            <p class="mt-4 text-sm text-gray-400 fade-in" style="transition-delay: 0.4s;">Criado com paixão pelas belezas de Trancoso.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const fadeInElements = document.querySelectorAll('.fade-in');
+
+            const observerOptions = {
+                root: null, // viewport
+                rootMargin: '0px',
+                threshold: 0.3 // Trigger when 30% of the item is visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            fadeInElements.forEach(element => {
+                observer.observe(element);
+            });
+
+            // Video loop fix
+            const heroVideo = document.getElementById('hero-video');
+            if (heroVideo) {
+                // When the video ends, reset it to the beginning instantly
+                heroVideo.addEventListener('ended', function() {
+                    this.currentTime = 0;
+                    this.play();
+                }, false);
+            }
+            
+            // Touch event for destination tooltips
+            const destinationItems = document.querySelectorAll('.destination-item');
+            
+            // Hide all tooltips when tapping outside
+            document.body.addEventListener('click', (e) => {
+                destinationItems.forEach(item => {
+                    if (!item.contains(e.target)) {
+                        item.classList.remove('active');
+                    }
+                });
+            });
+
+            destinationItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevents the body listener from immediately hiding
+                    
+                    // Toggle the 'active' class to show/hide the tooltip
+                    const wasActive = item.classList.contains('active');
+                    
+                    // First, hide all other tooltips
+                    destinationItems.forEach(i => i.classList.remove('active'));
+                    
+                    // Then, if this item was not active, make it active
+                    if (!wasActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
